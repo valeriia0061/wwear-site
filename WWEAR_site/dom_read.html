@@ -1,0 +1,212 @@
+<!doctype html>
+<html lang="ru">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <title>DOM_JS. Считываем информацию из DOM — WWEAR</title>
+    <link rel="stylesheet" href="styles.css">
+    <style>
+        .stage {
+            position: relative;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        .stage .bg {
+            display: block;
+            width: 100%;
+            height: auto;
+            border: 1px solid #e5e7eb;
+            border-radius: 12px;
+        }
+
+        .stage .photo {
+            position: absolute;
+            left: 25px;
+            top: 480px;
+
+            width: 170px;
+            height: auto;
+            border-radius: 8px;
+            border: 2px solid #d1d5db;
+        }
+
+        #pas {
+            position: absolute;
+            inset: 0;
+            font: 700 24px "Times New Roman", serif;
+            line-height: 1.1;
+            color: #111827;
+        }
+
+        #pas p {
+            position: absolute;
+            margin: 0;
+        }
+
+
+        #pas .p4 {
+            left: 250px;
+            top: 450px;
+        }
+
+        /* Фамилия */
+        #pas .p5 {
+            left: 250px;
+            top: 510px;
+        }
+
+        /* Имя */
+        #pas .p6 {
+            left: 250px;
+            top: 550px;
+        }
+
+        /* Отчество */
+        #pas .p7 {
+            left: 385px;
+            top: 580px;
+        }
+
+        /* Дата рождения */
+        #pas .p8 {
+            left: 300px;
+            top: 615px;
+        }
+
+        /* Место рождения */
+
+        .controls {
+            text-align: center;
+            margin: 16px 0;
+        }
+
+        .controls button {
+            margin: 6px;
+        }
+    </style>
+</head>
+
+<body>
+    <header>
+        <nav>
+            <div class="brand">
+                <a href="index.html" class="home-link">
+                    <img src="img/logo.png" alt="WWEAR — на главную" class="inline">
+                </a>
+                WWEAR
+            </div>
+
+            <div class="links">
+                <a href="index.html">Главная</a>
+                <a href="index.html#r1">Новинки</a>
+                <a href="catalog.html">Каталог</a>
+                <a href="lookbook.html">Лукбук</a>
+                <a href="about.html">О бренде</a>
+                <a href="about.html#values">Ценности</a>
+                <a href="contacts.html">Контакты</a>
+                <a class="active" href="dom_read.html" aria-current="page">DOM_JS. Считываем информацию из DOM</a>
+                <a href="algo.html">Решение алгоритмической задачи</a>
+                <a href="https://12storeez.com" target="_blank" rel="noopener">Наши друзья</a>
+            </div>
+        </nav>
+    </header>
+
+    <main>
+        <a id="top"></a>
+        <div class="card">
+            <h1>DOM_JS. Считываем информацию из DOM</h1>
+
+            <section class="card" id="passport">
+                <h2>Паспорт (макет)</h2>
+
+                <div class="stage">
+                    <!-- фон паспорта -->
+                    <img class="bg" src="img/passport.jpg" alt="Паспорт (фон)">
+                    <!-- фото -->
+                    <img class="photo" src="img/passport_photo.jpg" alt="Фото владельца" <!-- текст поверх -->
+                    <div id="pas">
+                        <p class="p4"><span id="fam">ЗАХАРОВА</span></p>
+                        <p class="p5"><span id="name">ВАЛЕРИЯ</span></p>
+                        <p class="p6"><span id="patr">МИХАЙЛОВНА</span></p>
+                        <p class="p7"><span id="dob">09.08.2006</span></p>
+                        <p class="p8"><span id="pob">Г. ЕКАТЕРИНБУРГ</span></p>
+                    </div>
+                </div>
+
+
+                <div class="controls">
+                    <button type="button" onclick="showCyrillic()">Кириллица</button>
+                    <button type="button" onclick="showLatin()">Латиница</button>
+                </div>
+
+                <p><a href="#top">К началу ↑</a></p>
+            </section>
+        </div>
+        <section>
+            <h2>Данные паспорта (текстовый вид)</h2>
+
+            <p>Фамилия: <span>Захарова</span></p>
+            <p>Имя: <span>Валерия</span></p>
+            <p>Год рождения: <span>2006</span></p>
+        </section>
+        <section class="card" id="screenshot">
+            <h2>Скрин из DevTools (получение данных из DOM)</h2>
+            <p>На скриншоте показано, как из DOM считаны данные о годе рождения.</p>
+            <img src="img/screen_dom.jpg" alt="Скрин из DevTools" width="800">
+        </section>
+
+    </main>
+
+    <footer>
+        <div>© WWEAR</div>
+    </footer>
+
+    <script>
+        
+        const userData = {
+            lastName: "ЗАХАРОВА",
+            firstName: "ВАЛЕРИЯ",
+            middleName: "МИХАЙЛОВНА",
+            birthDate: "09.08.2006",
+            birthPlace: "Г. ЕКАТЕРИНБУРГ"
+        };
+
+        function showCyrillic() {
+            fam.textContent = userData.lastName;
+            const firstNameEl = document.getElementById("name");
+            firstNameEl.textContent = userData.firstName;
+            patr.textContent = userData.middleName;
+            dob.textContent = userData.birthDate;
+            pob.textContent = userData.birthPlace;
+        }
+
+        function showLatin() {
+            fam.textContent = toLatin(userData.lastName);
+            const firstNameEl = document.getElementById("name");
+            firstNameEl.textContent = toLatin(userData.firstName);
+            patr.textContent = toLatin(userData.middleName);
+            dob.textContent = userData.birthDate;
+            pob.textContent = toLatin(userData.birthPlace);
+        }
+
+
+        // Простая транслитерация (для защиты достаточно)
+        function toLatin(text) {
+            const t = {
+                'А': 'A', 'Б': 'B', 'В': 'V', 'Г': 'G', 'Д': 'D', 'Е': 'E', 'Ё': 'E', 'Ж': 'ZH', 'З': 'Z', 'И': 'I', 'Й': 'I', 'К': 'K', 'Л': 'L', 'М': 'M',
+                'Н': 'N', 'О': 'O', 'П': 'P', 'Р': 'R', 'С': 'S', 'Т': 'T', 'У': 'U', 'Ф': 'F', 'Х': 'KH', 'Ц': 'TS', 'Ч': 'CH', 'Ш': 'SH', 'Щ': 'SHCH',
+                'Ы': 'Y', 'Э': 'E', 'Ю': 'IU', 'Я': 'IA', ' ': ' '
+            };
+            return text.toUpperCase().split('').map(ch => t[ch] ?? ch).join('');
+        }
+
+        // По умолчанию показываем кириллицу
+        showCyrillic();
+    </script>
+
+
+</body>
+
+</html>
